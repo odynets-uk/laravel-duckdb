@@ -8,6 +8,14 @@ use Illuminate\Support\Str;
 
 class Grammar extends PostgresGrammar
 {
+
+    public function __construct($connection = null)
+    {
+        if ($connection) {
+            parent::__construct($connection);
+        }
+    }
+    
     protected function compileFrom(Builder $query, $table)
     {
         if($this->isExpression($table)) {
