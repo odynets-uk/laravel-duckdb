@@ -34,9 +34,9 @@ class Grammar extends PostgresGrammar
 
     private function wrapFromClause($value, $prefixAlias = false){
         if(!Str::endsWith($value, ')')){//is function
-            return $this->quoteString(($prefixAlias?$this->tablePrefix:'').$value);
+            return $this->quoteString(($prefixAlias?$this->getTablePrefix():'').$value);
         }
-        return  ($prefixAlias?$this->tablePrefix:'').$value;
+        return  ($prefixAlias?$this->getTablePrefix():'').$value;
     }
 
     public function compileTruncate(Builder $query)
