@@ -209,8 +209,13 @@ class LaravelDuckdbConnection extends PostgresConnection
         if (is_null($this->schemaGrammar)) {
             $this->useDefaultSchemaGrammar();
         }
-
-        return new \Harish\LaravelDuckdb\Schema\Builder($this);
+    
+        $builder = new \Harish\LaravelDuckdb\Schema\Builder($this);
+        
+        // Автоматично створюємо таблицю migrations, якщо її немає
+        $this->ensureMigrationsTable();
+        
+        return $builder;
     }
 
     public function useDefaultSchemaGrammar()
