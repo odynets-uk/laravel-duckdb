@@ -212,7 +212,7 @@ class LaravelDuckdbConnection extends PostgresConnection
     
         $builder = new \Harish\LaravelDuckdb\Schema\Builder($this);
         
-        // Автоматично створюємо таблицю migrations, якщо її немає
+        // Automatically create the migrations table if it does not exist
         $this->ensureMigrationsTable();
         
         return $builder;
@@ -236,5 +236,25 @@ class LaravelDuckdbConnection extends PostgresConnection
     public function getSchemaGrammar()
     {
         return $this->schemaGrammar;
+    }
+
+    private function ensureMigrationsTable()
+    {
+        try {
+            // Перевіряємо чи існує таблиця
+            $result = $this->select("SELECT table_name FROM information_schema.tables WHERE table_name = 'migrations'");
+            
+            if (empty($result)) {
+                // Створюємо sequence та таблицю
+                $this->statement("CREATE SEQUENCE IF NOT EXISTS migrations_id_seq");
+                $this->statement("CREATE TABLE IF NOT EXISTS migrations (
+                    id INTEGER PRIMARY KEY DEFAULT nextval('migrations_id_seq'),
+                    migration VARCHAR(255) NOT NULL,
+                    batch INTEGER NOT NULL
+                )");
+            }
+        } catch (\Exception $e) {
+            // Ігноруємо помилки, якщо таблиця вже існує
+        }
     }
 }
