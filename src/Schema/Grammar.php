@@ -51,7 +51,7 @@ class Grammar extends PostgresGrammar
         return 'bigint';
     }
 
-    protected function compileUnique(Blueprint $blueprint, Fluent $command)
+    public function compileUnique(Blueprint $blueprint, Fluent $command)
     {
         // DuckDB не підтримує ALTER TABLE ADD CONSTRAINT UNIQUE
         // Використовуємо CREATE UNIQUE INDEX натомість
