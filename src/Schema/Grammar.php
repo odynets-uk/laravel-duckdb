@@ -9,6 +9,13 @@ class Grammar extends PostgresGrammar
 {
     protected $transactions = false;
 
+    public function __construct($connection = null)
+    {
+        if ($connection) {
+            parent::__construct($connection);
+        }
+    }
+
     protected function typeInteger(Fluent $column)
     {
         return 'integer';
