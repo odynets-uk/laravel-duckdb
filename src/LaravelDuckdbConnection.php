@@ -183,7 +183,7 @@ class LaravelDuckdbConnection extends PostgresConnection
 
     public function getDefaultQueryGrammar()
     {
-        return $this->withTablePrefix(new QueryGrammar($this));
+        return $this->withTablePrefix(new QueryGrammar);
     }
 
     public function useDefaultPostProcessor()
@@ -217,7 +217,7 @@ class LaravelDuckdbConnection extends PostgresConnection
 
     protected function getDefaultSchemaGrammar()
     {
-        return new SchemaGrammar($this);
+        return new SchemaGrammar;
     }
 
     /**
