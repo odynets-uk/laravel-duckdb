@@ -30,4 +30,14 @@ class Grammar extends PostgresGrammar
     {
         return 'smallint';
     }
+
+    protected function typeTimestamp(Fluent $column)
+    {
+        return 'timestamp';
+    }
+
+    protected function typeTimestampTz(Fluent $column)
+    {
+        return 'timestamp with time zone';
+    }
 }
