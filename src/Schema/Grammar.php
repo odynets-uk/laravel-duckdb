@@ -2,6 +2,7 @@
 
 namespace Harish\LaravelDuckdb\Schema;
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Grammars\PostgresGrammar;
 use Illuminate\Support\Fluent;
 
@@ -53,8 +54,8 @@ class Grammar extends PostgresGrammar
 
     public function compileUnique(Blueprint $blueprint, Fluent $command)
     {
-        // DuckDB не підтримує ALTER TABLE ADD CONSTRAINT UNIQUE
-        // Використовуємо CREATE UNIQUE INDEX натомість
+        // DuckDB does not support ALTER TABLE ADD CONSTRAINT UNIQUE
+        // Using CREATE UNIQUE INDEX instead
         return sprintf('create unique index %s on %s (%s)',
             $this->wrap($command->index),
             $this->wrapTable($blueprint),
