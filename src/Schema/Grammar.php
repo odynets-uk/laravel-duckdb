@@ -50,11 +50,4 @@ class Grammar extends PostgresGrammar
     {
         return 'bigint';
     }
-    
-    protected function modifyIncrement(Blueprint $blueprint, Fluent $column)
-    {
-        if (in_array($column->type, $this->serials) && $column->autoIncrement) {
-            return ' primary key';
-        }
-    }
 }
