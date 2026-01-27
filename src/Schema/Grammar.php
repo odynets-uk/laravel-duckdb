@@ -40,4 +40,21 @@ class Grammar extends PostgresGrammar
     {
         return 'timestamp with time zone';
     }
+
+    protected function typeSerial(Fluent $column)
+    {
+        return 'integer';
+    }
+    
+    protected function typeBigSerial(Fluent $column)
+    {
+        return 'bigint';
+    }
+    
+    protected function modifyIncrement(Blueprint $blueprint, Fluent $column)
+    {
+        if (in_array($column->type, $this->serials) && $column->autoIncrement) {
+            return ' primary key';
+        }
+    }
 }
