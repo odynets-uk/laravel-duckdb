@@ -42,11 +42,11 @@ class Grammar extends PostgresGrammar
         return 'smallint';
     }
 
-    protected function typeString(Fluent $column)
-    {
-        //DuckDB supports VARCHAR with or without length
-        return $column->length ? "varchar({$column->length})" : 'varchar';
-    }
+//    protected function typeString(Fluent $column)
+//    {
+//        //DuckDB supports VARCHAR with or without length
+//        return $column->length ? "varchar({$column->length})" : 'varchar';
+//    }
 
     /*** DuckDB does not support precision in TIMESTAMP through parentheses ***/
     protected function typeTimestamp(Fluent $column)
