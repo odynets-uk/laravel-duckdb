@@ -241,11 +241,11 @@ class LaravelDuckdbConnection extends PostgresConnection
     private function ensureMigrationsTable()
     {
         try {
-            // Перевіряємо чи існує таблиця
+            // Checking if the table exists
             $result = $this->select("SELECT table_name FROM information_schema.tables WHERE table_name = 'migrations'");
             
             if (empty($result)) {
-                // Створюємо sequence та таблицю
+                // Creating a sequence and a table
                 $this->statement("CREATE SEQUENCE IF NOT EXISTS migrations_id_seq");
                 $this->statement("CREATE TABLE IF NOT EXISTS migrations (
                     id INTEGER PRIMARY KEY DEFAULT nextval('migrations_id_seq'),
@@ -254,7 +254,7 @@ class LaravelDuckdbConnection extends PostgresConnection
                 )");
             }
         } catch (\Exception $e) {
-            // Ігноруємо помилки, якщо таблиця вже існує
+            // Ignoring errors if the table already exists
         }
     }
 }

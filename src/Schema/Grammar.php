@@ -17,9 +17,9 @@ class Grammar extends PostgresGrammar
         }
     }
 
-    protected function typeInteger(Fluent $column)
+    protected function typeBigSerial(Fluent $column)
     {
-        return 'integer';
+        return 'bigint';
     }
 
     protected function typeBigInteger(Fluent $column)
@@ -27,29 +27,70 @@ class Grammar extends PostgresGrammar
         return 'bigint';
     }
 
+    protected function typeSerial(Fluent $column)
+    {
+        return 'integer';
+    }
+
+    protected function typeInteger(Fluent $column)
+    {
+        return 'integer';
+    }
+
     protected function typeSmallInteger(Fluent $column)
     {
         return 'smallint';
     }
 
+    protected function typeString(Fluent $column)
+    {
+        //DuckDB supports VARCHAR with or without length
+        return $column->length ? "varchar({$column->length})" : 'varchar';
+    }
+
+    /*** DuckDB does not support precision in TIMESTAMP through parentheses ***/
     protected function typeTimestamp(Fluent $column)
     {
-        return 'timestamp';
+        return 'timestamp'; // Default microsecond precision
+    }
+
+    protected function typeTimestampMs(Fluent $column)
+    {
+        return 'timestamp_ms';
+    }
+
+    protected function typeTimestampS(Fluent $column)
+    {
+        return 'timestamp_s';
+    }
+
+    protected function typeTimestampNs(Fluent $column)
+    {
+        return 'timestamp_ns';
     }
 
     protected function typeTimestampTz(Fluent $column)
     {
-        return 'timestamp with time zone';
+        // DuckDB uses timestamptz or timestamp with time zone
+        return 'timestamptz';
     }
 
-    protected function typeSerial(Fluent $column)
+    protected function modifyDefault(Blueprint $blueprint, Fluent $column)
     {
-        return 'integer';
+        if (! is_null($column->default)) {
+            return ' default '.$this->getDefaultValue($column->default);
+        }
+
+        return '';
     }
-    
-    protected function typeBigSerial(Fluent $column)
+
+    protected function modifyNullable(Blueprint $blueprint, Fluent $column)
     {
-        return 'bigint';
+        if ($column->nullable) {
+            return '';
+        }
+
+        return ' not null';
     }
 
     public function compileUnique(Blueprint $blueprint, Fluent $command)
